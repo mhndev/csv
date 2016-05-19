@@ -185,7 +185,6 @@ class Csv
      */
     public function arrayToCsv($data, $filename, $delimiter = ',')
     {
-
         $fp = fopen($filename, 'w');
 
         foreach ($data as $fields) {
@@ -195,9 +194,71 @@ class Csv
             fputcsv($fp, $fields, $delimiter);
         }
 
+        $this->csvArray[$filename] = $data;
+
         fclose($fp);
     }
 
-    
-    
+    /**
+     * @param string $filename
+     * @param array $criteria
+     * @return bool|array
+     */
+    public function findOneBy($filename, array $criteria)
+    {
+        $array = $this->csvToArray($filename);
+
+        $criteria_key = array_keys($criteria)[0];
+        $criteria_value = $criteria[$criteria_key];
+
+        foreach ($array as $key => $record){
+            if($record[$criteria_key] == $criteria_value) {
+                return $record;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * @param string $filename
+     * @param array $criteria
+     * @return bool|array
+     */
+    public function findManyBy($filename, array $criteria)
+    {
+        $array = $this->csvToArray($filename);
+
+        $criteria_key = array_keys($criteria)[0];
+        $criteria_value = $criteria[$criteria_key];
+
+        $result = [];
+
+        foreach ($array as $key => $record){
+            if($record[$criteria_key] == $criteria_value) {
+                $result[] =  $record;
+            }
+        }
+
+        return empty($result) ? false : $result;
+    }
+
+    /**
+     *
+     */
+    public function deleteCache()
+    {
+        $this->csvArray = [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getCsvArray()
+    {
+        return $this->csvArray;
+    }
+
+
 }

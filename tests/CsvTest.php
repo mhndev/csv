@@ -164,5 +164,48 @@ class CsvTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($sampleArray == $resultArray);
     }
 
+    public function testFindOneBy()
+    {
+        $csv = new Csv();
+        $sampleArray = [[1,2,3,4,5],[6,7,8,9,10],[6,'hamid',8,9,'majid']];
 
+        $filename = vfsStream::url("rootDirectory").DIRECTORY_SEPARATOR."test.csv";
+
+        $csv->arrayToCsv($sampleArray, $filename);
+        $resultArray = $csv->findOneBy($filename, [2=>8]);
+
+        $expectedArray = [6,7,8,9,10];
+
+        $this->assertTrue($expectedArray == $resultArray);
+    }
+
+
+    public function testFindManyBy()
+    {
+        $csv = new Csv();
+        $sampleArray = [[1,2,3,4,5],[6,7,8,9,10],[6,'hamid',8,9,'majid']];
+
+        $filename = vfsStream::url("rootDirectory").DIRECTORY_SEPARATOR."test.csv";
+
+        $csv->arrayToCsv($sampleArray, $filename);
+        $resultArray = $csv->findManyBy($filename, [2=>8]);
+
+        $expectedArray = [[6,7,8,9,10],[6,'hamid',8,9,'majid']];
+
+        $this->assertTrue($expectedArray == $resultArray);
+    }
+
+    public function testDeleteCache()
+    {
+        $csv = new Csv();
+        $sampleArray = [[1,2,3,4,5],[6,7,8,9,10],[6,'hamid',8,9,'majid']];
+
+        $filename = vfsStream::url("rootDirectory").DIRECTORY_SEPARATOR."test.csv";
+
+        $csv->arrayToCsv($sampleArray,$filename);
+        $csv->deleteCache();
+
+
+        $this->assertTrue([] == $csv->getCsvArray());
+    }
 }
