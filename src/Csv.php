@@ -77,7 +77,7 @@ class Csv
      */
     public function updateLineBy($filename, $type, $id , array $data, $delimiter = ',')
     {
-        $array = $this->csvToArrayUsingGenerator($filename, $delimiter);
+        $array = $this->csvToArray($filename, $delimiter);
 
 
         if($type == self::LINE_ID){
@@ -93,6 +93,9 @@ class Csv
             $this->arrayToCsv($array, $filename);
         }else
             throw new \InvalidArgumentException;
+
+        $this->csvArray[$filename] = $array;
+
     }
 
 
@@ -108,11 +111,14 @@ class Csv
     }
 
     /**
+     *
+     * Line Number starts from zero
      * @param string $filename
      * @param string $delimiter
+     * @param bool $ignoreFirstRowAsHeader
      * @return array|bool
      */
-    public function csvToArray($filename, $delimiter = ',')
+    public function csvToArray($filename, $delimiter = ',', $ignoreFirstRowAsHeader = false)
     {
         if(!empty($this->csvArray[$filename]))
             return $this->csvArray[$filename];
@@ -124,13 +130,21 @@ class Csv
         $data = array();
         if (($handle = fopen($filename, 'r')) !== FALSE)
         {
-            while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE)
-            {
-                if(!$header)
-                    $header = $row;
-                else
-                    $data[] = array_combine($header, $row);
+            if($ignoreFirstRowAsHeader){
+                while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE)
+                {
+                    if(!$header)
+                        $header = $row;
+                    else
+                        $data[] = array_combine($header, $row);
+                }
+            }else{
+                while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE)
+                {
+                    $data[] = $row;
+                }
             }
+
             fclose($handle);
         }
         return $this->csvArray[$filename] = $data;

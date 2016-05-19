@@ -12,72 +12,118 @@
 
 namespace mhndev\csv;
 
+use org\bovigo\vfs\vfsStream;
+
 class CsvTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @param $filename
-     * @param string $delimiter
-     * @return \Generator
-     */
-    public function testCsvToArrayUsingGenerator($filename, $delimiter = ',')
-    {
 
+
+    private $root;
+
+    public function setUp()
+    {
+        $this->root = vfsStream::setup("rootDirectory");
     }
 
 
-    /**
-     * @param $filename
-     * @param $type
-     * @param $id
-     * @param string $delimiter
-     */
-    public function testDeleteOnLineBy($filename , $type , $id, $delimiter = ',')
+    public function testCsvToArrayUsingGenerator()
     {
+        $csv = new Csv();
+        $sampleArray = [[1,2,3,4,5],[6,7,8,9,10]];
 
+        $filename = vfsStream::url("rootDirectory").DIRECTORY_SEPARATOR."test.csv";
+
+        $csv->arrayToCsv($sampleArray, $filename);
+
+        $resultArrayIterator = $csv->csvToArrayUsingGenerator($filename);
+
+        $resultArray = [];
+
+        foreach ($resultArrayIterator as $array){
+            $resultArray[] = $array;
+        }
+
+        $this->assertTrue($sampleArray == $resultArray);
     }
 
 
-    /**
-     * @param $filename
-     * @param $type
-     * @param $id
-     * @param $data
-     * @param string $delimiter
-     */
-    public function testUpdateLineBy($filename, $type, $id , $data, $delimiter = ',')
-    {
 
+    public function testDeleteOnLineBy()
+    {
+        $csv = new Csv();
+        $sampleArray = [[1,2,3,4,5],[6,7,8,9,10]];
+
+        $filename = vfsStream::url("rootDirectory").DIRECTORY_SEPARATOR."test.csv";
+
+        $csv->arrayToCsv($sampleArray, $filename);
+
+        $resultArray = $csv->csvToArray($filename);
+        $this->assertTrue($sampleArray == $resultArray);
     }
 
 
-    /**
-     * @param $filename
-     * @param array $data
-     */
-    public function testAddLine($filename, array $data)
-    {
 
+    public function testUpdateLineBy()
+    {
+        $csv = new Csv();
+        $sampleArray = [[1,2,3,4,5],[6,7,8,9,10]];
+
+        $filename = vfsStream::url("rootDirectory").DIRECTORY_SEPARATOR."test.csv";
+
+        $csv->arrayToCsv($sampleArray, $filename);
+        $csv->updateLineBy($filename, Csv::LINE_NUMBER, 1 , [11,12,13,14,15]);
+
+        $resultArray = $csv->csvToArray($filename);
+        $expectedArray = [[1,2,3,4,5],[11,12,13,14,15]];
+
+        $this->assertTrue($expectedArray == $resultArray);
     }
 
-    /**
-     * @param string $filename
-     * @param string $delimiter
-     * @return array|bool
-     */
-    public function testCsvToArray($filename, $delimiter = ',')
-    {
 
+    public function testAddLine()
+    {
+        $csv = new Csv();
+        $sampleArray = [[1,2,3,4,5],[6,7,8,9,10]];
+
+        $filename = vfsStream::url("rootDirectory").DIRECTORY_SEPARATOR."test.csv";
+
+        $csv->arrayToCsv($sampleArray, $filename);
+        $csv->addLine($filename, [11,12,13,14,15]);
+
+        $resultArray = $csv->csvToArray($filename);
+        $expectedArray = [[1,2,3,4,5],[6,7,8,9,10],[11,12,13,14,15]];
+
+        $this->assertTrue($expectedArray == $resultArray);
     }
 
 
-    /**
-     * @param mixed  $data
-     * @param string $filename
-     * @param string $delimiter
-     */
-    public function testArrayToCsv($data, $filename, $delimiter = ',')
+    public function testCsvToArray()
     {
+        $csv = new Csv();
+        $sampleArray = [[1,2,3,4,5],[6,7,8,9,10]];
 
+        $filename = vfsStream::url("rootDirectory").DIRECTORY_SEPARATOR."test.csv";
+
+        $csv->arrayToCsv($sampleArray, $filename);
+
+        $resultArray = $csv->csvToArray($filename);
+
+        $this->assertTrue($sampleArray == $resultArray);
+    }
+
+
+    public function testArrayToCsv()
+    {
+        $csv = new Csv();
+        $sampleArray = [[1,2,3,4,5],[6,7,8,9,10]];
+
+        $filename = vfsStream::url("rootDirectory").DIRECTORY_SEPARATOR."test.csv";
+
+        $csv->arrayToCsv($sampleArray, $filename);
+
+        $resultArray = $csv->csvToArray($filename);
+
+        $this->assertTrue($sampleArray == $resultArray);
     }
 
 
