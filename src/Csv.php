@@ -21,8 +21,6 @@ class Csv
 {
 
     protected $csvArray = [];
-    const LINE_NUMBER = 'line_number';
-    const LINE_ID = 'line_id';
 
     /**
      * @param string $filename
@@ -41,61 +39,85 @@ class Csv
     }
 
 
+
     /**
      * @param string $filename
-     * @param string $type
      * @param integer $id
      * @param string $delimiter
      */
-    public function deleteOnLineBy($filename , $type , $id, $delimiter = ',')
+    public function deleteOneLineById($filename , $id, $delimiter = ',')
+    {
+        $array = $this->csvToArray($filename, $delimiter);
+        unset($array[$id]);
+
+        $this->arrayToCsv($array, $filename);
+        $this->csvArray[$filename] = $array;
+    }
+
+
+    /**
+     * @param $filename
+     * @param $criteria
+     * @param string $delimiter
+     */
+    public function deleteLineBy($filename , $criteria, $delimiter = ',')
     {
         $array = $this->csvToArray($filename, $delimiter);
 
+        $criteria_key = array_keys($criteria)[0];
+        $criteria_value = $criteria[$criteria_key];
 
-        if($type == self::LINE_ID){
-            foreach ($array as $key => $record){
-                if($record[0] == $id)
-                    unset($array[$key]);
+
+        foreach ($array as $key => $record){
+            if($record[$criteria_key] == $criteria_value) {
+                unset($array[$key]);
             }
-            $this->arrayToCsv($array, $filename);
-            
-        }elseif ($type == self::LINE_NUMBER){
-            unset($array[$id]);
+        }
 
-            $this->arrayToCsv($array, $filename);
-        }else
-            throw new \InvalidArgumentException;
+        $this->arrayToCsv($array, $filename);
+        $this->csvArray[$filename] = $array;
     }
 
 
     /**
      * @param string $filename
-     * @param string $type
      * @param integer $id
      * @param array $data
      * @param string $delimiter
      */
-    public function updateLineBy($filename, $type, $id , array $data, $delimiter = ',')
+    public function updateOneLineById($filename, $id , array $data, $delimiter = ',')
     {
         $array = $this->csvToArray($filename, $delimiter);
 
+        $array[$id] = $data;
 
-        if($type == self::LINE_ID){
-            foreach ($array as $key => $record){
-                if($record[0] == $id)
-                    $array[$key] = $data;
+        $this->arrayToCsv($array, $filename);
+
+        $this->csvArray[$filename] = $array;
+    }
+
+    /**
+     * @param string $filename
+     * @param array $criteria
+     * @param array $data
+     * @param string $delimiter
+     */
+    public function updateLineBy($filename , $criteria, array $data, $delimiter = ',')
+    {
+        $array = $this->csvToArray($filename, $delimiter);
+
+        $criteria_key = array_keys($criteria)[0];
+        $criteria_value = $criteria[$criteria_key];
+
+        foreach ($array as $key => $record){
+            if($record[$criteria_key] == $criteria_value) {
+                $array[$key] = $data;
             }
-            $this->arrayToCsv($array, $filename);
-
-        }elseif ($type == self::LINE_NUMBER){
-            $array[$id] = $data;
-
-            $this->arrayToCsv($array, $filename);
-        }else
-            throw new \InvalidArgumentException;
+        }
 
         $this->csvArray[$filename] = $array;
 
+        $this->arrayToCsv($array, $filename);
     }
 
 
@@ -105,6 +127,11 @@ class Csv
      */
     public function addLine($filename, array $data)
     {
+        $array = $this->csvToArray($filename);
+
+        $array[] = $data;
+        $this->csvArray[$filename] = $array;
+
         $handle = fopen($filename, "a");
         fputcsv($handle, $data);
         fclose($handle);
