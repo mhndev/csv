@@ -1,7 +1,22 @@
 <?php
 
-namespace mhndev\csv;
+/*
+ * This file is part of mhndev/csv.
+ *
+ * (c) Majid Abdolhosseini <majid8911303@gmail.com>
+ *
+ * For the full copyright and license information, please view the "LICENSE.md"
+ * file that was distributed with this source code.
+ */
 
+namespace mhndev\csv;
+/**
+ * Class Csv
+ * @package mhndev\csv
+ * 
+ * Csv Manipulation
+ * This class helps you read , write , add lines , delete lines , ...from a csv file.
+ */
 class Csv
 {
 
@@ -10,7 +25,7 @@ class Csv
     const LINE_ID = 'line_id';
 
     /**
-     * @param $filename
+     * @param string $filename
      * @param string $delimiter
      * @return \Generator
      */
@@ -27,9 +42,9 @@ class Csv
 
 
     /**
-     * @param $filename
-     * @param $type
-     * @param $id
+     * @param string $filename
+     * @param string $type
+     * @param integer $id
      * @param string $delimiter
      */
     public function deleteOnLineBy($filename , $type , $id, $delimiter = ',')
@@ -54,13 +69,13 @@ class Csv
 
 
     /**
-     * @param $filename
-     * @param $type
-     * @param $id
-     * @param $data
+     * @param string $filename
+     * @param string $type
+     * @param integer $id
+     * @param array $data
      * @param string $delimiter
      */
-    public function updateLineBy($filename, $type, $id , $data, $delimiter = ',')
+    public function updateLineBy($filename, $type, $id , array $data, $delimiter = ',')
     {
         $array = $this->csvToArrayUsingGenerator($filename, $delimiter);
 
@@ -82,7 +97,7 @@ class Csv
 
 
     /**
-     * @param $filename
+     * @param string $filename
      * @param array $data
      */
     public function addLine($filename, array $data)

@@ -1,11 +1,15 @@
 {
   "name": "mhndev/csv",
   "description": "library for working with csv",
-  "license": "MIT",
+  "keywords": ["csv", "csv library", "csv manipulation"],
+  "type": "library",
+  "homepage": "http://github.com/mhndev/csv",
+  "license": "BSD Style",
   "authors": [
     {
       "name": "Majid Abdolhosseini",
-      "email": "majid8911303@gmail.com"
+      "email": "majid8911303@gmail.com",
+      "homepage": "http://mhndev.com"
     }
   ],
 
@@ -13,11 +17,22 @@
     "php": ">=5.4.0"
   },
 
+  "require-dev": {
+    "phpunit/phpunit": "~4.0"
+  },
 
   "autoload": {
     "psr-4": {
       "mhndev\\csv\\": "src/"
     }
   },
+
+  "autoload-dev": {
+    "psr-4": {
+      "mhndev\\csv\\":"tests/"
+    }
+  },
+
+
   "minimum-stability": "dev"
 }
