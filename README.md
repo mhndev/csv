@@ -10,4 +10,5 @@ powerful and fully tested php library to work with csv files
 #### delete multiple line from csv file by specific column value
 #### update a line from a csv file by line number
 #### update multiple line from a csv file by specific column value
-
+#### find one line from a csv file by specific column value
+#### find many line from a csv file by specific column value
