@@ -1,6 +1,6 @@
 ## CSV
 
-powerful php library to work with csv files
+powerful and fully tested php library to work with csv files
 
 ### features :
 #### convert an array to a csv file
