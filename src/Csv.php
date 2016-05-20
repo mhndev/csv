@@ -141,40 +141,61 @@ class Csv
      *
      * Line Number starts from zero
      * @param string $filename
+     * @param int $offset
+     * @param null $count
      * @param string $delimiter
      * @param bool $ignoreFirstRowAsHeader
      * @return array|bool
      */
-    public function csvToArray($filename, $delimiter = ',', $ignoreFirstRowAsHeader = false)
+    public function csvToArray($filename, $offset = 0, $count = null, $delimiter = ',', $ignoreFirstRowAsHeader = false)
     {
+        $result = [];
+
         if(!empty($this->csvArray[$filename]))
-            return $this->csvArray[$filename];
+            $result = $this->csvArray[$filename];
 
         if(!file_exists($filename) || !is_readable($filename))
             return FALSE;
 
-        $header = NULL;
+        $header = null;
+
         $data = array();
-        if (($handle = fopen($filename, 'r')) !== FALSE)
-        {
+
+
+        if (($handle = fopen($filename, 'r')) !== FALSE) {
+
             if($ignoreFirstRowAsHeader){
-                while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE)
-                {
-                    if(!$header)
-                        $header = $row;
-                    else
-                        $data[] = array_combine($header, $row);
+                $header = fgetcsv($handle, 1000, $delimiter);
+
+                while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE) {
+                    $data[] = array_combine($header, $row);
                 }
-            }else{
-                while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE)
-                {
+
+            }
+
+            else{
+
+                while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE) {
                     $data[] = $row;
                 }
             }
 
+            $result = $data;
+
             fclose($handle);
+
+            $this->csvArray[$filename] = $data;
         }
-        return $this->csvArray[$filename] = $data;
+
+        if(empty($count)){
+            $count = count($result);
+        }
+
+
+        $result = array_slice($result, $offset, $count);
+
+
+        return $result;
     }
 
 

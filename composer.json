@@ -1,7 +1,7 @@
 {
   "name": "mhndev/csv",
   "description": "library for working with csv",
-  "keywords": ["csv", "csv library", "csv manipulation"],
+  "keywords": ["csv", "csv library", "csv manipulation", "parse csv", "csv to array", "csv to array"],
   "type": "library",
   "homepage": "http://github.com/mhndev/csv",
   "license": "BSD Style",
