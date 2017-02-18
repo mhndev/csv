@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/mhndev/csv.svg?branch=1.3.1)](https://travis-ci.org/mhndev/csv)
+<a href="https://packagist.org/packages/mhndev/csv"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/mhndev/csv"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/mhndev/csv"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+
 ## CSV
 
 powerful and fully tested php library to work with csv files
