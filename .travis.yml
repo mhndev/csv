@@ -10,6 +10,7 @@ php:
   - hhvm
 
 before_script:
-  - curl --version
   - composer install --no-interaction --prefer-source --dev
-  
+
+
+script: vendor/bin/phpunit

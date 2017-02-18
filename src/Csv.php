@@ -47,7 +47,7 @@ class Csv
      */
     public function deleteOneLineById($filename , $id, $delimiter = ',')
     {
-        $array = $this->csvToArray($filename, $delimiter);
+        $array = $this->csvToArray($filename, 0, null, $delimiter);
         unset($array[$id]);
 
         $this->arrayToCsv($array, $filename);
@@ -62,7 +62,7 @@ class Csv
      */
     public function deleteLineBy($filename , $criteria, $delimiter = ',')
     {
-        $array = $this->csvToArray($filename, $delimiter);
+        $array = $this->csvToArray($filename, 0, null, $delimiter);
 
         $criteria_key = array_keys($criteria)[0];
         $criteria_value = $criteria[$criteria_key];
@@ -87,7 +87,7 @@ class Csv
      */
     public function updateOneLineById($filename, $id , array $data, $delimiter = ',')
     {
-        $array = $this->csvToArray($filename, $delimiter);
+        $array = $this->csvToArray($filename, 0, null, $delimiter);
 
         $array[$id] = $data;
 
@@ -104,7 +104,7 @@ class Csv
      */
     public function updateLineBy($filename , $criteria, array $data, $delimiter = ',')
     {
-        $array = $this->csvToArray($filename, $delimiter);
+        $array = $this->csvToArray($filename, 0, null, $delimiter);
 
         $criteria_key = array_keys($criteria)[0];
         $criteria_value = $criteria[$criteria_key];

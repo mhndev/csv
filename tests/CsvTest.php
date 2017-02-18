@@ -59,8 +59,8 @@ class CsvTest extends \PHPUnit_Framework_TestCase
         $csv->deleteOneLineById($filename, 1);
 
         $resultArray = $csv->csvToArray($filename);
-        unset($sampleArray[1]);
 
+        array_splice($sampleArray, 1, 1);
         $this->assertTrue($sampleArray == $resultArray);
     }
 
