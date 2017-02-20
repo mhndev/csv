@@ -1,29 +1,37 @@
 <?php
-
 /*
  * This file is part of mhndev/csv.
  *
  * (c) Majid Abdolhosseini <majid8911303@gmail.com>
  *
- * For the full copyright and license information, please view the "LICENSE.md"
- * file that was distributed with this source code.
  */
-
-
 namespace mhndev\csv;
 
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
 
-class CsvTest extends \PHPUnit_Framework_TestCase
+/**
+ * Class CsvTest
+ * @package mhndev\csv
+ */
+class CsvTest extends TestCase
 {
 
 
+    /**
+     * @var \org\bovigo\vfs\vfsStreamDirectory virtual file system
+     */
     private $root;
 
+
+    /**
+     * setup test
+     */
     public function setUp()
     {
         $this->root = vfsStream::setup("rootDirectory");
     }
+
 
 
     public function testCsvToArrayUsingGenerator()

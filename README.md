@@ -17,3 +17,34 @@ powerful and fully tested php library to work with csv files
 #### update multiple line from a csv file by specific column value
 #### find one line from a csv file by specific column value
 #### find many line from a csv file by specific column value
+
+
+## Sample Usage
+
+```php
+
+use mhndev\csv\Csv;
+
+$csv = new Csv();
+$sampleArray = [[1,2,3,4,5],[6,7,8,9,10]];
+$filename ="/path/to/test.csv";
+$csv->arrayToCsv($sampleArray, $filename);
+$resultArrayIterator = $csv->csvToArrayUsingGenerator($filename);
+
+
+
+
+$csv = new Csv();
+$sampleArray = [[1,2,3,4,5],[6,7,8,9,10],[11,12,13,14,15]];
+$filename ="/path/to/test.csv";
+$csv->arrayToCsv($sampleArray, $filename);
+$csv->deleteOneLineById($filename, 1);
+
+
+$csv = new Csv();
+$sampleArray = [[1,2,3,4,5],[6,7,8,9,10],[6,'hamid',8,9,'majid']];
+$filename ="/path/to/test.csv";
+$csv->arrayToCsv($sampleArray, $filename);
+$csv->updateLineBy($filename, [2=>8] , [11,12,13,14,15]);
+
+```
